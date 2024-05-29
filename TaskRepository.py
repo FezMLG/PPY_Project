@@ -7,10 +7,10 @@ from task import Task
 class TaskRepository:
     def __init__(self, db: Connection):
         self.db: Connection = db
-        self.cursor = self.db.cursor()
 
     def create_table(self):
-        self.cursor.execute("""
+        cursor = self.db.cursor()
+        cursor.execute("""
             CREATE TABLE IF NOT EXISTS tasks (
                 id TEXT PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -22,13 +22,18 @@ class TaskRepository:
         self.db.commit()
 
     def insert(self, task: Task):
-        self.cursor.execute("""
+        cursor = self.db.cursor()
+        cursor.execute("""
             INSERT INTO tasks (id, name, description, status, created_at)
             VALUES (?, ?, ?, ?, ?)
             """, (str(task.id), task.name, task.description, str(task.status), task.created_at))
         self.db.commit()
 
+        return task
+
     def select_all(self, status=None) -> List[Task]:
+        cursor = self.db.cursor()
+
         query = """
             SELECT * FROM tasks
             """
@@ -36,17 +41,18 @@ class TaskRepository:
         if status:
             query += f" WHERE status = '{status}'"
 
-        self.cursor.execute(query)
+        cursor.execute(query)
 
         tasks = []
-        for row in self.cursor.fetchall():
+        for row in cursor.fetchall():
             task = Task(task_id=row[0], name=row[1], description=row[2], status=row[3], created_at=row[4])
             tasks.append(task)
 
         return tasks
 
     def update(self, task: Task):
-        self.cursor.execute("""
+        cursor = self.db.cursor()
+        cursor.execute("""
             UPDATE tasks
             SET name = ?, description = ?, status = ?
             WHERE id = ?
@@ -55,9 +61,21 @@ class TaskRepository:
         self.db.commit()
 
     def delete(self, task_id: str):
-        self.cursor.execute("""
+        cursor = self.db.cursor()
+        cursor.execute("""
             DELETE FROM tasks
             WHERE id = ?
-            """, task_id
+            """, (task_id,)
                             )
         self.db.commit()
+
+    def select_one_by_id(self, task_id: str):
+        cursor = self.db.cursor()
+        cursor.execute("""
+            SELECT * FROM tasks
+            WHERE id = ?
+            """, (task_id,)
+                            )
+
+        row = cursor.fetchone()
+        return Task(task_id=row[0], name=row[1], description=row[2], status=row[3], created_at=row[4])

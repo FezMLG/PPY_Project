@@ -5,8 +5,8 @@ import TaskStatusEnum
 
 
 class Task:
-    def __init__(self, name: str, description: str, status: TaskStatusEnum, task_id: uuid.UUID = uuid.uuid4(),
-                 created_at: datetime = datetime.datetime.now()):
+    def __init__(self, name: str, description: str, status: TaskStatusEnum = TaskStatusEnum.TaskStatus.TODO,
+                 task_id: uuid.UUID = uuid.uuid4(), created_at: datetime = datetime.datetime.now()):
         self.id: uuid.UUID = task_id
         self.name: str = name
         self.description: str = description
