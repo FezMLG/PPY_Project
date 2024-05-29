@@ -12,3 +12,6 @@ class TaskService:
 
     def get_all_tasks(self, status=None):
         return self.task_repository.select_all(status)
+
+    def update_task(self, task: Task):
+        self.task_repository.update(task)

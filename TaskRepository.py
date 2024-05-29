@@ -44,3 +44,12 @@ class TaskRepository:
             tasks.append(task)
 
         return tasks
+
+    def update(self, task: Task):
+        self.cursor.execute("""
+            UPDATE tasks
+            SET name = ?, description = ?, status = ?
+            WHERE id = ?
+            """, (task.name, task.description, str(task.status), str(task.id))
+        )
+        self.db.commit()
