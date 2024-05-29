@@ -20,4 +20,4 @@ task = Task(
 )
 
 # task_service.create_task(task)
-print(task_service.get_all_tasks())
+print(task_service.get_all_tasks(TaskStatus.IN_PROGRESS))
