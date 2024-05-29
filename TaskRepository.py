@@ -53,3 +53,11 @@ class TaskRepository:
             """, (task.name, task.description, str(task.status), str(task.id))
         )
         self.db.commit()
+
+    def delete(self, task_id: str):
+        self.cursor.execute("""
+            DELETE FROM tasks
+            WHERE id = ?
+            """, task_id
+                            )
+        self.db.commit()

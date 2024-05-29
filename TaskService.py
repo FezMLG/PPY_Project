@@ -15,3 +15,6 @@ class TaskService:
 
     def update_task(self, task: Task):
         self.task_repository.update(task)
+
+    def remove_task(self, task: Task):
+        self.task_repository.delete(str(task.id))
