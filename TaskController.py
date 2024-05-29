@@ -1,4 +1,4 @@
-import TaskStatusEnum
+from TaskStatusEnum import TaskStatus
 from TaskService import TaskService
 from task import Task
 
@@ -46,7 +46,7 @@ class TaskController:
         print(f"""
         Name: {task.name}
         Description: {task.description}
-        Status: {task.status.name}
+        Status: {task.status}
         Created At: {task.created_at}
         """)
 
@@ -75,7 +75,7 @@ class TaskController:
         description = input(f"Description ({task.description}): ")
 
         print("Select status:")
-        for status in TaskStatusEnum.TaskStatus:
+        for status in TaskStatus:
             print(f"{status.value}. {status.name}")
         status = input(f"Status ({task.status}): ")
 
@@ -88,9 +88,14 @@ class TaskController:
         if status == "":
             status = task.status
 
+        if status not in TaskStatus._value2member_map_:
+            print("Invalid status, not updating status")
+            # self.edit_task(task, controller)
+            status = task.status
+
         task.set_name(name)
         task.set_description(description)
-        task.set_status(TaskStatusEnum.TaskStatus(int(status)))
+        task.set_status(TaskStatus(int(status)))
 
         self.task_service.update_task(task)
 
