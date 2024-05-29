@@ -9,3 +9,6 @@ class TaskService:
 
     def create_task(self, task: Task):
         self.task_repository.insert(task)
+
+    def get_all_tasks(self):
+        return self.task_repository.select_all()

@@ -19,4 +19,5 @@ task = Task(
     status=TaskStatus.TODO
 )
 
-task_service.create_task(task)
+# task_service.create_task(task)
+print(task_service.get_all_tasks())
