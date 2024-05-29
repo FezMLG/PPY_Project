@@ -26,7 +26,7 @@ class TaskRepository:
         cursor.execute("""
             INSERT INTO tasks (id, name, description, status, created_at)
             VALUES (?, ?, ?, ?, ?)
-            """, (str(task.id), task.name, task.description, str(task.status), task.created_at))
+            """, (str(task.id), task.name, task.description, task.status.name, task.created_at))
         self.db.commit()
 
         return task
@@ -56,7 +56,7 @@ class TaskRepository:
             UPDATE tasks
             SET name = ?, description = ?, status = ?
             WHERE id = ?
-            """, (task.name, task.description, str(task.status), str(task.id))
+            """, (task.name, task.description, task.status.name, str(task.id))
         )
         self.db.commit()
 

@@ -1,3 +1,4 @@
+import TaskStatusEnum
 from TaskService import TaskService
 from task import Task
 
@@ -24,7 +25,7 @@ class TaskController:
         i = 0
         for task in tasks:
             i += 1
-            print(f"{i}. {task.name}")
+            print(f"{i}. {task.name} - {task.status}")
 
         print("")
         print("0. Back")
@@ -45,7 +46,7 @@ class TaskController:
         print(f"""
         Name: {task.name}
         Description: {task.description}
-        Status: {task.status}
+        Status: {task.status.name}
         Created At: {task.created_at}
         """)
 
@@ -72,7 +73,11 @@ class TaskController:
 
         name = input(f"Name ({task.name}): ")
         description = input(f"Description ({task.description}): ")
-        # status = input(f"Status ({task.status}): ")
+
+        print("Select status:")
+        for status in TaskStatusEnum.TaskStatus:
+            print(f"{status.value}. {status.name}")
+        status = input(f"Status ({task.status}): ")
 
         if name == "":
             name = task.name
@@ -80,11 +85,12 @@ class TaskController:
         if description == "":
             description = task.description
 
-        # if status == "":
-        #     status = task.status
+        if status == "":
+            status = task.status
 
         task.set_name(name)
         task.set_description(description)
+        task.set_status(TaskStatusEnum.TaskStatus(int(status)))
 
         self.task_service.update_task(task)
 
