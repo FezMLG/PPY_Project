@@ -2,7 +2,7 @@ from TaskController import TaskController
 
 
 class Controller:
-    options = []
+    options = {}
 
     def __init__(self, task_controller: TaskController):
         self.task_controller = task_controller
@@ -28,3 +28,14 @@ class Controller:
             self.task_controller.view_tasks(self)
         elif option == "0":
             exit(0)
+
+    def get_input_int(self, message: str) -> int | None:
+        inp = input(message)
+        try:
+            if inp == "":
+                return None
+            return int(inp)
+        except ValueError:
+            print("Invalid input. Please enter an integer.")
+            return self.get_input_int(message)
+

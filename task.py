@@ -26,5 +26,5 @@ class Task:
     def set_description(self, description):
         self.description = description
 
-    def set_status(self, status):
+    def set_status(self, status: TaskStatus):
         self.status = status

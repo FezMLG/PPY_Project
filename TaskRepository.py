@@ -1,6 +1,7 @@
 from sqlite3 import Connection
 from typing import List
 
+from TaskStatusEnum import TaskStatus
 from task import Task
 
 
@@ -45,7 +46,7 @@ class TaskRepository:
 
         tasks = []
         for row in cursor.fetchall():
-            task = Task(task_id=row[0], name=row[1], description=row[2], status=row[3], created_at=row[4])
+            task = Task(task_id=row[0], name=row[1], description=row[2], status=TaskStatus[row[3]], created_at=row[4])
             tasks.append(task)
 
         return tasks

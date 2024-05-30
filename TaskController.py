@@ -68,7 +68,7 @@ class TaskController:
             print("Invalid option")
             self.view_task(task, controller)
 
-    def edit_task(self, task, controller):
+    def edit_task(self, task: Task, controller):
         controller.print_header(f"Edit: {task.name}")
 
         name = input(f"Name ({task.name}): ")
@@ -77,7 +77,8 @@ class TaskController:
         print("Select status:")
         for status in TaskStatus:
             print(f"{status.value}. {status.name}")
-        status = input(f"Status ({task.status}): ")
+
+        new_status: int | None = controller.get_input_int(f"Status ({task.status}): ")
 
         if name == "":
             name = task.name
@@ -85,17 +86,18 @@ class TaskController:
         if description == "":
             description = task.description
 
-        if status == "":
-            status = task.status
-
-        if status not in TaskStatus._value2member_map_:
+        if new_status is None:
+            pass
+        elif new_status > len(TaskStatus) or new_status < 0:
             print("Invalid status, not updating status")
-            # self.edit_task(task, controller)
-            status = task.status
+        else:
+            print("Updating status")
+            task.set_status(TaskStatus(new_status))
 
         task.set_name(name)
         task.set_description(description)
-        task.set_status(TaskStatus(int(status)))
+
+        print(task)
 
         self.task_service.update_task(task)
 
@@ -111,4 +113,3 @@ class TaskController:
         print("Task deleted")
 
         self.view_tasks(controller)
-
