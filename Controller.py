@@ -17,6 +17,7 @@ class Controller:
         print("""
         1. Create Task
         2. View Tasks
+        3. View Tasks by Status
         
         0. Exit
         """)
@@ -26,6 +27,8 @@ class Controller:
             self.task_controller.create_task()
         elif option == "2":
             self.task_controller.view_tasks(self)
+        elif option == "3":
+            self.task_controller.view_tasks_by_status(self)
         elif option == "0":
             exit(0)
 

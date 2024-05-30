@@ -113,3 +113,39 @@ class TaskController:
         print("Task deleted")
 
         self.view_tasks(controller)
+
+    def view_tasks_by_status(self, controller):
+        controller.print_header("View Tasks by Status")
+
+        print("Select status:")
+        for status in TaskStatus:
+            print(f"{status.value}. {status.name}")
+
+
+        selected_status: int | None = controller.get_input_int("Status: ")
+
+        if selected_status is None or selected_status > len(TaskStatus) or selected_status < 0:
+            print("Invalid status")
+            return self.view_tasks_by_status(controller)
+
+        tasks = self.task_service.get_all_tasks(TaskStatus(selected_status))
+
+        controller.print_header(f"Tasks with status: {TaskStatus(selected_status).name}")
+
+        i = 0
+        for task in tasks:
+            i += 1
+            print(f"{i}. {task.name} - {task.status}")
+
+        print("")
+        print("0. Back")
+
+        option = input("Enter option: ")
+        if option == "0":
+            controller.main_menu()
+        else:
+            if int(option) > len(tasks) or int(option) - 1 < 0:
+                print("Invalid option")
+                return self.view_tasks_by_status(controller)
+            else:
+                return self.view_task(tasks[int(option) - 1], controller)
