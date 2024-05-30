@@ -42,6 +42,11 @@ class TestTaskService(unittest.TestCase):
         updated = self.task_service.get_task(str(created.id))
         self.assertEqual(created.status, updated.status)
 
+    def test_search_by_name(self):
+        created = self.task_service.create_task(Task("name", "description", TaskStatus.TODO))
+        found = self.task_service.find_by_name("m")
+        self.assertEqual(1, len(found))
+        self.assertEqual(created.id, found[0].id)
 
 if __name__ == '__main__':
     unittest.main()

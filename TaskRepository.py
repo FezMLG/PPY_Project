@@ -1,3 +1,4 @@
+import uuid
 from sqlite3 import Connection
 from typing import List
 
@@ -86,7 +87,7 @@ class TaskRepository:
         return self.map_task(row)
 
     def map_task(self, row):
-        return Task(task_id=row[0], name=row[1], description=row[2], status=TaskStatus[row[3]], created_at=row[4])
+        return Task(task_id=uuid.UUID(row[0]), name=row[1], description=row[2], status=TaskStatus[row[3]], created_at=row[4])
 
     def select_by_name(self, name):
         cursor = self.db.cursor()
