@@ -46,7 +46,7 @@ class TaskRepository:
 
         tasks = []
         for row in cursor.fetchall():
-            task = Task(task_id=row[0], name=row[1], description=row[2], status=TaskStatus[row[3]], created_at=row[4])
+            task = self.map_task(row)
             tasks.append(task)
 
         return tasks
@@ -79,4 +79,11 @@ class TaskRepository:
                             )
 
         row = cursor.fetchone()
-        return Task(task_id=row[0], name=row[1], description=row[2], status=row[3], created_at=row[4])
+
+        if row is None:
+            return None
+
+        return self.map_task(row)
+
+    def map_task(self, row):
+        return Task(task_id=row[0], name=row[1], description=row[2], status=TaskStatus[row[3]], created_at=row[4])
