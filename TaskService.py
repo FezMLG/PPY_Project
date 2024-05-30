@@ -21,3 +21,6 @@ class TaskService:
 
     def get_task(self, task_id: str):
         return self.task_repository.select_one_by_id(task_id)
+
+    def find_by_name(self, name):
+        return self.task_repository.select_by_name(name)

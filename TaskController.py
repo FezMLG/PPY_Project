@@ -149,3 +149,31 @@ class TaskController:
                 return self.view_tasks_by_status(controller)
             else:
                 return self.view_task(tasks[int(option) - 1], controller)
+
+    def search_tasks_by_name(self, controller):
+        controller.print_header("Search Tasks by Name")
+
+        name = input("Enter name: ")
+
+        tasks = self.task_service.find_by_name(name)
+
+
+        controller.print_header(f"Tasks with name: {name}")
+
+        i = 0
+        for task in tasks:
+            i += 1
+            print(f"{i}. {task.name} - {task.status}")
+
+        print("")
+        print("0. Back")
+
+        option = input("Enter option: ")
+        if option == "0":
+            controller.main_menu()
+        else:
+            if int(option) > len(tasks) or int(option) - 1 < 0:
+                print("Invalid option")
+                return self.search_tasks_by_name(controller)
+            else:
+                return self.view_task(tasks[int(option) - 1], controller)

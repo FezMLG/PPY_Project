@@ -87,3 +87,18 @@ class TaskRepository:
 
     def map_task(self, row):
         return Task(task_id=row[0], name=row[1], description=row[2], status=TaskStatus[row[3]], created_at=row[4])
+
+    def select_by_name(self, name):
+        cursor = self.db.cursor()
+        cursor.execute("""
+            SELECT * FROM tasks
+            WHERE name like '%' || ? || '%'
+            """, (name,)
+                            )
+
+        tasks = []
+        for row in cursor.fetchall():
+            task = self.map_task(row)
+            tasks.append(task)
+
+        return tasks

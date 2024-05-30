@@ -18,6 +18,7 @@ class Controller:
         1. Create Task
         2. View Tasks
         3. View Tasks by Status
+        4. Search Tasks by Name
         
         0. Exit
         """)
@@ -29,6 +30,8 @@ class Controller:
             self.task_controller.view_tasks(self)
         elif option == "3":
             self.task_controller.view_tasks_by_status(self)
+        elif option == "4":
+            self.task_controller.search_tasks_by_name(self)
         elif option == "0":
             exit(0)
 
